@@ -1,0 +1,29 @@
+[
+    {
+        "id": "book-001",
+        "title": "Electrochemical Systems",
+        "authors":["John Newman", "Karen E. Thomas-Alyea"],
+        "isbn_10":"0471477567",
+        "year":2004,
+        "publisher":"Wiley-Interscience",
+        "edition":3
+    },
+    {
+        "id": "book-002",
+        "title": "Electrochemical Methods: Fundamentals and Applications",
+        "authors":["Allen J. Bard", "Larry R. Faulkner"],
+        "isbn_10":"0471043729",
+        "year":2000,
+        "publisher":"Wiley",
+        "edition":2
+    },
+    {
+        "id": "book-003",
+        "title": "Fundamentals of Electrochemistry",
+        "authors":["Vladimir S. Bagotsky"],
+        "isbn_10":"0471700584",
+        "year":2005,
+        "publisher":"Wiley-Interscience",
+        "edition": null
+    }
+]

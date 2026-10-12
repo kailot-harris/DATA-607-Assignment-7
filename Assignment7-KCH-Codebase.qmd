@@ -1,0 +1,57 @@
+---
+title: "DATA 607 - Assignment 7 - Codebase"
+author: "Kailot C. Harris"
+date: "2026/10/12"
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-overflow: wrap
+editor: visual
+theme:
+  dark: darkly
+  light: flatly
+---
+
+# Introduction and Overview
+
+# Approach
+
+1.  Import each data set
+2.  Tidy each data set
+3.  Analyze each data set
+4.  Visualize each data set
+5.  Present findings and recommendations for each data set
+
+# Codebase
+
+```{r packages}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(jsonlite)
+library(rvest)
+
+```
+
+## Data Import
+
+```{r}
+books_df_1 <- fromJSON("books.json")
+```
+
+## Data structure before tidying
+
+### Column Names
+
+### Row Count
+
+### Representative Sample
+
+## Data Transformation
+
+## Analysis
+
+## Findings and Recommendations
