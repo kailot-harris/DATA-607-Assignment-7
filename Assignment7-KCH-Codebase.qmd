@@ -15,13 +15,35 @@ theme:
 
 # Introduction and Overview
 
+In this assignment, manipulating HTML and JSON formatted data is the primary objective. Additionally, building familiarity with R packages for importing data held in the formats will be necessary. Some useful R packages may include `jsonlite` and `rvest`.
+
+The data set consists of the attributes describing three Electrochemistry textbooks published in the 2000s. These are considered seminal texts in the field, and they are often assigned in undergraduate- and graduate-level courses on Electrochemistry and Electrochemical Engineering.
+
+Anticipated challenges involve manually inputting data into these formats, handling missing data records, ingesting JSON and HTML files, and comparing the data frames in R. One additional challenge that garner attention would be storing the data in a local database, such as MongoDB, and querying the database to import data.
+
 # Approach
 
-1.  Import each data set
-2.  Tidy each data set
-3.  Analyze each data set
-4.  Visualize each data set
-5.  Present findings and recommendations for each data set
+1.  Author HTML and JSON files
+
+    1b. Attach files to a local database (e.g. MongoDB)
+
+2.  Import both files into R via `jsonlite` or `rvest` packages
+
+    2b. Ingest data from local database
+
+3.  Perform exploratory data analysis
+
+    1.  Compare data frame shape
+    2.  Determine missing data integrity
+    3.  Observe samples of each frame
+
+4.  Compare the data frames to determine congruence
+
+5.  Summarize data in tabular form
+
+6.  Present findings and recommendations
+
+7.  Present findings and recommendations for each data set
 
 # Codebase
 
@@ -38,19 +60,84 @@ library(rvest)
 
 ## Data Import
 
-```{r}
-books_df_1 <- fromJSON("books.json")
+```{r read-data}
+#| echo: true
+#| warning: false
+#| message: false
+
+books_data_json <- fromJSON("https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.json")
+
+books_data_html <- read_html("https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.html") 
 ```
 
 ## Data structure before tidying
 
+```{r inspect}
+#| echo: true
+#| warning: false
+#| message: false
+
+books_table_html <- books_data_html |> 
+  html_element("table") |>             # extract table element
+  html_table()                         # extract table contents
+```
+
 ### Column Names
+
+```{r column-names}
+#| echo: true
+#| warning: false
+#| message: false
+
+names(books_data_json)
+
+```
+
+```{r column-names-2}
+#| echo: true
+#| warning: false
+#| message: false
+
+names(books_table_html)
+```
 
 ### Row Count
 
+```{r row-count-json}
+#| echo: true
+#| warning: false
+#| message: false
+
+nrow(books_data_json)
+```
+
+```{r row-count-html}
+#| echo: true
+#| warning: false
+#| message: false
+
+nrow(books_table_html)
+```
+
 ### Representative Sample
 
-## Data Transformation
+```{r head-json}
+#| echo: true
+#| warning: false
+#| message: false
+
+knitr::kable(head(books_data_json))
+```
+
+```{r head-html}
+#| echo: true
+#| warning: false
+#| message: false
+
+knitr::kable(head(books_table_html))
+```
+
+## Data Frame Comparison
 
 ## Analysis
 
