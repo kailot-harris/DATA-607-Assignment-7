@@ -25,11 +25,11 @@ Anticipated challenges involve manually inputting data into these formats, handl
 
 1.  Author HTML and JSON files
 
-    1b. Attach files to a local database (e.g. MongoDB)
+    1b. Attach files to a local database (e.g. MongoDB) \[optional\]
 
 2.  Import both files into R via `jsonlite` or `rvest` packages
 
-    2b. Ingest data from local database
+    2b. Ingest data from local database \[optional\]
 
 3.  Perform exploratory data analysis
 
