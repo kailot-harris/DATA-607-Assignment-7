@@ -15,19 +15,19 @@ theme:
 
 # Introduction and Overview
 
-In this assignment, manipulating HTML and JSON formatted data is the primary objective. Additionally, building familiarity with R packages for importing data held in the formats will be necessary. Some useful R packages may include `jsonlite` and `rvest`.
+In this assignment, manipulating HTML and JSON formatted data is the primary objective. Additionally, building familiarity with R packages for importing data held in these formats will be necessary. Some useful R packages may include `jsonlite` and `rvest`.
 
 The data set consists of the attributes describing three Electrochemistry textbooks published in the 2000s. These are considered seminal texts in the field, and they are often assigned in undergraduate- and graduate-level courses on Electrochemistry and Electrochemical Engineering.
 
-Anticipated challenges involve manually inputting data into these formats, handling missing data records, ingesting JSON and HTML files, and comparing the data frames in R. One additional challenge that garner attention would be storing the data in a local database, such as MongoDB, and querying the database to import data.
+Anticipated challenges involve manually inputting data into these formats, handling missing data records, ingesting JSON and HTML files, and comparing the data frames in R. One additional challenge that may garner attention would be storing the data in a local database, such as MongoDB, and querying the database to import data.
 
 # Approach
 
 1.  Author HTML and JSON files
 
-    1b. Attach files to a local database (e.g. MongoDB) \[optional\]
+    1b. Load files to a local database (e.g. MongoDB) \[optional\]
 
-2.  Import both files into R via `jsonlite` or `rvest` packages
+2.  Import both files into R via `jsonlite` and `rvest` packages
 
     2b. Ingest data from local database \[optional\]
 
