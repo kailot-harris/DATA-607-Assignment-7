@@ -42,5 +42,3 @@ Anticipated challenges involve manually inputting data into these formats, handl
 5.  Summarize data in tabular form
 
 6.  Present findings and recommendations
-
-7.  Present findings and recommendations for each data set
