@@ -55,7 +55,6 @@ Anticipated challenges involve manually inputting data into these formats, handl
 library(tidyverse)
 library(jsonlite)
 library(rvest)
-library(mongolite)
 
 ```
 
@@ -83,6 +82,8 @@ Next, JSON data is imported from the local database with a fallback to a github-
 json_url <- "https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.json"
 
 books_data_json <- tryCatch({
+  library(mongolite)
+  
   books_db <- mongo(collection = "books", 
                     db = "library")
   
@@ -186,7 +187,17 @@ knitr::kable(head(books_table_html,3))
 
 ## Data Frame Comparison
 
-Comparing the two 3 row by 7 column tables reveals specific discrepancies in how the data was stored. First, the HTML-sourced frame stores each ISBN-10 value as a numeric variable rather than a categorical variable, as the JSON-sourced frame does. This is evidenced by the omission of the leading zero in each ISBN-10 value in the HTML-sourced frame. Second, each format treats a missing entry differently: HTML stores the missing data as an em-dash, whereas JSON stores the missing data as `NA`.
+Comparing the two 3 row by 7 column tables reveals specific discrepancies in how the data was stored. These data frames are **not** identical. The below output displays the result of a congruence check (base R's `identical()`).
+
+```{r identical-check}
+#| echo: true
+#| warning: false
+#| message: false
+
+identical(books_table_html, books_data_json)
+```
+
+First, the HTML-sourced frame stores each ISBN-10 value as a numeric variable rather than a categorical variable, as the JSON-sourced frame does. This is evidenced by the omission of the leading zero in each ISBN-10 value in the HTML-sourced frame. Second, each format treats a missing entry differently: HTML stores the missing data as an em-dash, whereas JSON stores the missing data as `NA`.
 
 ## Analysis
 
