@@ -55,24 +55,59 @@ Anticipated challenges involve manually inputting data into these formats, handl
 library(tidyverse)
 library(jsonlite)
 library(rvest)
+library(mongolite)
 
 ```
 
 ## Data Import
 
-```{r read-data}
+First, the github-hosted html file is accessed using the `read_html` function from the `rvest` package.
+
+```{r read-html-data}
 #| echo: true
 #| warning: false
 #| message: false
 
-books_data_json <- fromJSON("https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.json")
+html_url <- "https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.html"
 
-books_data_html <- read_html("https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.html") 
+books_data_html <- read_html(html_url) 
+```
+
+Next, JSON data is imported from the local database with a fallback to a github-hosted JSON file. This defensive programming technique can help when a user does not have MongoDB installed or if there are any connection issues. Google Gemini Flash 3.8 was consulted for structuring the `trycatch` base R function.
+
+```{r read-json-data}
+#| echo: true
+#| warning: false
+#| message: false
+
+json_url <- "https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment-7/refs/heads/main/data/books.json"
+
+books_data_json <- tryCatch({
+  books_db <- mongo(collection = "books", 
+                    db = "library")
+  
+  data <- books_db$find()
+
+  if (nrow(data)==0) stop("!Error: collection empty, 
+                          try alternate source")
+  
+  message("!Success: loaded local data from MongoDB")
+  data
+  
+  }, error=function(e) {
+    
+    message("!Alert: Local MongoDB unavailable --> 
+            falling back to GitHub...")
+    
+    fromJSON(json_url)
+  })
 ```
 
 ## Data structure before tidying
 
-```{r inspect}
+Prior to investigating its structure, the HTML table is extracted from the HTML object into a data frame.
+
+```{r inspect-HTML}
 #| echo: true
 #| warning: false
 #| message: false
@@ -142,3 +177,9 @@ knitr::kable(head(books_table_html))
 ## Analysis
 
 ## Findings and Recommendations
+
+## AI Disclosure and Citation
+
+Google (Gemini 3.8 Flash, accessed through aistudio.google.com) helped structure the `trycatch` function to gracefully handle exceptions and errors.
+
+Google. (2026). *Gemini (3.8 Flash)* \[Large language model\]. <https://aistudio.google.com/>. Accessed October 13, 2026.
