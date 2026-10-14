@@ -211,6 +211,20 @@ knitr::kable(df_col_types)
 
 ## Findings and Recommendations
 
+Data collected on three Electrochemistry textbooks was stored in two different formats: JSON and HTML. There are several major points of comparison between the two file types.
+
+First, the data frames loaded from these data formats had identical shapes (3 rows by 7 columns) and describe identical entities (three books).
+
+Second, missing data is handled differently in each format: HTML stores an em-dash, whereas JSON stores missing entries as `NA` values.
+
+Third, the 'ISBN-10' column was cast as different types for each format. These values frequently begin with a leading zero (e.g. 0471477567). HTML parsing converted the numeric string to an integer data type (@tbl-3). This effectively strips the leading zero, resulting in a numeric data type for truly categorical data (i.e. 0471477567 \> 0470366456 does not convey meaningful information about the records). Parsing the JSON data, on the other hand, preserved the integrity of the numeric strings holding 'ISBN-10' data.
+
+Fourth, non-congruent data type casting also occurred for the 'edition' column: HTML parsing converted the field as a character string (likely due to its interpretation of the missing data as an em-dash) whereas JSON correctly held the data as a numeric type (i.e. 3 \> 2 *does* convey meaningful order information about the records).
+
+Last, the most critical distinction between the two data sets is in how their architecture handles multiple entries for one variable. HTML tables inherently store the data as a two-dimensional matrix, storing multiple author entries in one row. This elicits processing to separate the 'authors' field into separate entries for downstream querying, tidying, and summarizing. JSON is hierarchical and supports the storage of arrays, which allows the `jsonlite` package to import the 'authors' field directly as a list of records (@tbl-3).
+
+Recommendations for extending this work include expanding the data collection method to collect additional descriptive data for each book (e.g. paperback vs. hardcover), increase the sample size to (n\>30) so that statistical analysis can be reasonably performed, and leveraging queries to interact with the local MongoDB database rather than pulling in the entirety of the database. This points to the utility of JSON file formatting paired with MongoDB: improved data type casting integrity and rapid local data access make this configuration ideal for future investigation.
+
 ## AI Disclosure and Citation
 
 Google (Gemini 3.8 Flash, accessed through aistudio.google.com) helped structure the `trycatch` function to gracefully handle exceptions and errors, as well as the `sapply` syntax to determine the column classes.
