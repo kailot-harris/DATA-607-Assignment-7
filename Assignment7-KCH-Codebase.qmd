@@ -100,7 +100,8 @@ books_data_json <- tryCatch({
             falling back to GitHub...")
     
     fromJSON(json_url)
-  })
+  }) |>
+  janitor::clean_names()
 ```
 
 ## Data structure before tidying
@@ -114,10 +115,13 @@ Prior to investigating its structure, the HTML table is extracted from the HTML 
 
 books_table_html <- books_data_html |> 
   html_element("table") |>             # extract table element
-  html_table()                         # extract table contents
+  html_table() |>                      # extract table contents
+  janitor::clean_names()
 ```
 
 ### Column Names
+
+Column names for each data frame are determined using the `names` function.
 
 ```{r column-names}
 #| echo: true
@@ -138,6 +142,8 @@ names(books_table_html)
 
 ### Row Count
 
+Number of rows are displayed for each of the data frames.
+
 ```{r row-count-json}
 #| echo: true
 #| warning: false
@@ -156,30 +162,57 @@ nrow(books_table_html)
 
 ### Representative Sample
 
+All three row sof each data frame is visualized in tables below.
+
 ```{r head-json}
 #| echo: true
 #| warning: false
 #| message: false
+#| label: tbl-1
+#| tbl-cap: "Data Frame Sourced From JSON File via MongoDB"
 
-knitr::kable(head(books_data_json))
+knitr::kable(head(books_data_json,3))
 ```
 
 ```{r head-html}
 #| echo: true
 #| warning: false
 #| message: false
+#| label: tbl-2
+#| tbl-cap: "Data Frame Sourced From HTML File"
 
-knitr::kable(head(books_table_html))
+knitr::kable(head(books_table_html,3))
 ```
 
 ## Data Frame Comparison
 
+Comparing the two 3 row by 7 column tables reveals specific discrepancies in how the data was stored. First, the HTML-sourced frame stores each ISBN-10 value as a numeric variable rather than a categorical variable, as the JSON-sourced frame does. This is evidenced by the omission of the leading zero in each ISBN-10 value in the HTML-sourced frame. Second, each format treats a missing entry differently: HTML stores the missing data as an em-dash, whereas JSON stores the missing data as `NA`.
+
 ## Analysis
+
+The column data types are compared in the following table. Construction of the tibble was accomplished with assistance of Gemini 3.8 Flash, specifically in structuring the `sapply` function.
+
+```{r compare-column-types}
+#| echo: true
+#| warning: false
+#| message: false
+#| label: tbl-3
+#| tbl-cap: "Comparison of Data Frame Column Types"
+
+df_col_types <- tibble(
+  column_name = names(books_data_json),
+  json_col_types = sapply(books_data_json, class),
+  html_col_types = sapply(books_table_html, class),
+  match_bool = (json_col_types == html_col_types)
+)
+
+knitr::kable(df_col_types)
+```
 
 ## Findings and Recommendations
 
 ## AI Disclosure and Citation
 
-Google (Gemini 3.8 Flash, accessed through aistudio.google.com) helped structure the `trycatch` function to gracefully handle exceptions and errors.
+Google (Gemini 3.8 Flash, accessed through aistudio.google.com) helped structure the `trycatch` function to gracefully handle exceptions and errors, as well as the `sapply` syntax to determine the column classes.
 
 Google. (2026). *Gemini (3.8 Flash)* \[Large language model\]. <https://aistudio.google.com/>. Accessed October 13, 2026.
