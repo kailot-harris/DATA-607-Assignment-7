@@ -43,8 +43,6 @@ Anticipated challenges involve manually inputting data into these formats, handl
 
 6.  Present findings and recommendations
 
-7.  Present findings and recommendations for each data set
-
 # Codebase
 
 ```{r packages}
@@ -72,7 +70,7 @@ html_url <- "https://raw.githubusercontent.com/kailot-harris/DATA-607-Assignment
 books_data_html <- read_html(html_url) 
 ```
 
-Next, JSON data is imported from the local database with a fallback to a github-hosted JSON file. This defensive programming technique can help when a user does not have MongoDB installed or if there are any connection issues. Google Gemini Flash 3.8 was consulted for structuring the `trycatch` base R function.
+Next, JSON data is imported from the local database with a fallback to a github-hosted JSON file. This defensive programming technique can help when a user does not have MongoDB installed or if there are any connection issues. Google Gemini 3.8 Flash was consulted for structuring the `trycatch` base R function.
 
 ```{r read-json-data}
 #| echo: true
@@ -163,14 +161,14 @@ nrow(books_table_html)
 
 ### Representative Sample
 
-All three row sof each data frame is visualized in tables below.
+All three rows of each data frame is visualized in tables below.
 
 ```{r head-json}
 #| echo: true
 #| warning: false
 #| message: false
 #| label: tbl-1
-#| tbl-cap: "Data Frame Sourced From JSON File via MongoDB"
+#| tbl-cap: "Data Frame Sourced From JSON File"
 
 knitr::kable(head(books_data_json,3))
 ```
@@ -234,7 +232,7 @@ Fourth, non-congruent data type casting also occurred for the 'edition' column: 
 
 Last, the most critical distinction between the two data sets is in how their architecture handles multiple entries for one variable. HTML tables inherently store the data as a two-dimensional matrix, storing multiple author entries in one row. This elicits processing to separate the 'authors' field into separate entries for downstream querying, tidying, and summarizing. JSON is hierarchical and supports the storage of arrays, which allows the `jsonlite` package to import the 'authors' field directly as a list of records (@tbl-3).
 
-Recommendations for extending this work include expanding the data collection method to collect additional descriptive data for each book (e.g. paperback vs. hardcover), increase the sample size to (n\>30) so that statistical analysis can be reasonably performed, and leveraging queries to interact with the local MongoDB database rather than pulling in the entirety of the database. This points to the utility of JSON file formatting paired with MongoDB: improved data type casting integrity and rapid local data access make this configuration ideal for future investigation.
+Recommendations for extending this work include expanding the data collection method to collect additional descriptive data for each book (e.g. paperback vs. hardcover), increase the sample size to (n\>30) so that statistical analysis can be reasonably performed, and leveraging queries to interact with the local MongoDB database rather than pulling in the entirety of the database. This points to the utility of JSON file formatting: the analysis demonstrated that JSON preserved data type integrity (e.g., ISBN-10 as a string, edition as numeric) where HTML parsing did not. Pairing JSON with a local MongoDB store may also offer faster data access than repeated network calls to GitHub, though this was not measured here and would be a reasonable direction for future investigation.
 
 ## AI Disclosure and Citation
 
